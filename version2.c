@@ -50,9 +50,13 @@ int main(int argc, char** argv) {
 	u_char* dataCopy;
 	u_char* data;
 	int tcpCount = countOfTcp(argv[1]);
-	printf("Count of tcp packets: %d\n", tcpCount);
+	
 	segments = (tcpSegment*)malloc(sizeof(tcpSegment) * tcpCount);
 	
+	const struct ether_header* ethernetHeader;
+	const struct ip* ipHeader;
+	const struct tcphdr* tcpHeader; 
+
 	if (argc != 2) {
 		printf("Usage: %s filename\n", argv[0]);
 		return -1;
@@ -65,15 +69,13 @@ int main(int argc, char** argv) {
 	}
 	
 	while((state = pcap_next_ex(fp, &pkt_header, &pkt_data)) >= 0) {
+		ethernetHeader = (struct ether_header*)pkt_data
+		if ()
 		dataCopy  = (u_char*)malloc(pkt_header->caplen * sizeof(pkt_data));
 		segments[i].pktHeader = *pkt_header;
 		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen * sizeof(pkt_data));
 		segments[i].pktData = dataCopy;
 		++i;
-		if ((i-1) == 20 ) {
-			data = (u_char*)(pkt_data + sizeof(struct ether_header) + sizeof(struct ip) +sizeof(struct tcphdr));
-			printf("Header size: %d\nCAPTURED DATA %d:\n%s\nSize: %d\n",pkt_header->caplen,i-1, data,sizeof(data));
-		}
 	}
 
 //	for (i = 0; i < tcpCount; ++i) {
