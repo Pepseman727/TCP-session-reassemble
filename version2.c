@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
 	int state;
 
 	int tcpCount = countOfTcp(argv[1]);
-
+	printf("Count of tcp packets: %d\n", tcpCount);
 	segments = (tcpSegment*)malloc(sizeof(tcpSegment) * tcpCount);
 	
 	if (argc != 2) {
@@ -64,15 +64,16 @@ int main(int argc, char** argv) {
 	}
 	
 	while((state = pcap_next_ex(fp, &pkt_header, &pkt_data)) >= 0) {
-		u_char* dataCopy  = (u_char*)malloc(segments[i].pktHeader.caplen);
-		segments[i].pktHeader = *pkt_header;
-		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen);
-		segments[i].pkt_data = dataCopy;
+//		u_char* dataCopy  = (u_char*)malloc(segments[i].pktHeader.caplen);
+//		segments[i].pktHeader = *pkt_header;
+//		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen);
+//		segments[i].pktData = dataCopy;
 		++i;
 	}
-	
+	printf("\n%d\n",i);
 	for (i = 0; i < tcpCount; ++i) {
-		printf("%d packet\n\t %s\n",i,segments[i].pktData);
+		//printf("%d packet\n\t %s\n",i,segments[i].pktData);
+		printf("%d packet\n", i);
 	}
 
 
