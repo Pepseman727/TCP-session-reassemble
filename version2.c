@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
 	u_int i = 0;
 	int state;
 	u_char* dataCopy;
-	
+	u_char* data;
 	int tcpCount = countOfTcp(argv[1]);
 	printf("Count of tcp packets: %d\n", tcpCount);
 	segments = (tcpSegment*)malloc(sizeof(tcpSegment) * tcpCount);
@@ -65,17 +65,22 @@ int main(int argc, char** argv) {
 	}
 	
 	while((state = pcap_next_ex(fp, &pkt_header, &pkt_data)) >= 0) {
-		dataCopy  = (u_char*)malloc(segments[i].pktHeader.caplen);
+		dataCopy  = (u_char*)malloc(pkt_header->caplen * sizeof(pkt_data));
 		segments[i].pktHeader = *pkt_header;
-//		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen);
-//		segments[i].pktData = dataCopy;
+		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen * sizeof(pkt_data));
+		segments[i].pktData = dataCopy;
 		++i;
+		if ((i-1) == 20 ) {
+			data = (u_char*)(pkt_data + sizeof(struct ether_header) + sizeof(struct ip) +sizeof(struct tcphdr));
+			printf("Header size: %d\nCAPTURED DATA %d:\n%s\nSize: %d\n",pkt_header->caplen,i-1, data,sizeof(data));
+		}
 	}
-	printf("\n%d\n",i);
-	for (i = 0; i < tcpCount; ++i) {
+
+//	for (i = 0; i < tcpCount; ++i) {
 		//printf("%d packet\n\t %s\n",i,segments[i].pktData);
-		printf("%d packet %d\n", i, segments[i].pktHeader.ts.tv_sec);
-	}
+		data = (u_char*)(segments[20].pktData + sizeof(struct ether_header) + sizeof(struct ip) + sizeof(struct tcphdr));
+		printf("SAVED HEADER SIZE: %d\nSAVED DATA: %s\nSize: %d\n", segments[20].pktHeader.caplen, data,sizeof(data));
+//	}
 
 
 	if (state == -1) {
