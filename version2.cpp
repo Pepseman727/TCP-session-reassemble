@@ -85,8 +85,8 @@ int main(int argc, char** argv) {
 	free(dataCopy);
 	
 	for (i = 0; i < tcpCount; ++i) {
-		tcp = (struct tcphdr*)(segments[i].pktData + sizeof(struct ether_header) + sizeof(struct ip));
-		printf("TCP PACKET №%d.\n\tHIM TCP FLAG %d\n\n",i,tcp->th_flags);
+		tcpHeader = (struct tcphdr*)(segments[i].pktData + sizeof(struct ether_header) + sizeof(struct ip));
+		printf("TCP PACKET %d.\n\tHIM TCP FLAG: %d\n\n",i,tcpHeader->th_flags);
 	}
 
 
