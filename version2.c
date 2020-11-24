@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 	char errbuf[PCAP_ERRBUF_SIZE];
 	struct pcap_pkthdr* pkt_header;
 	const u_char* pkt_data;
-	u_int i = 0;
+	int i = 0;
 	int state;
 
 	int tcpCount = countOfTcp(argv[1]);
@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
 		u_char* dataCopy  = (u_char*)malloc(segments[i].pktHeader.caplen);
 		segments[i].pktHeader = *pkt_header;
 		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen);
-		segments[i].pkt_data = dataCopy;
+		segments[i].pktData = dataCopy;
 		++i;
 	}
 	
