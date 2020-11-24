@@ -82,11 +82,12 @@ int main(int argc, char** argv) {
 		}
 	}
 
-//	for (i = 0; i < tcpCount; ++i) {
-		//printf("%d packet\n\t %s\n",i,segments[i].pktData);
-//		data = (u_char*)(segments[20].pktData + sizeof(struct ether_header) + sizeof(struct ip) + sizeof(struct tcphdr));
-//		printf("SAVED HEADER SIZE: %d\nSAVED DATA: %s\nSize: %d\n", segments[20].pktHeader.caplen, data,sizeof(data));
-//	}
+	free(dataCopy);
+	
+	for (i = 0; i < tcpCount; ++i) {
+		tcp = (struct tcphdr*)(segments[i].pktData + sizeof(struct ether_header) + sizeof(struct ip));
+		printf("TCP PACKET №%d.\n\tHIM TCP FLAG %d\n\n",i,tcp->th_flags);
+	}
 
 
 	if (state == -1) {
