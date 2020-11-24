@@ -64,9 +64,18 @@ int main(int argc, char** argv) {
 	}
 	
 	while((state = pcap_next_ex(fp, &pkt_header, &pkt_data)) >= 0) {
-	  
+		u_char* dataCopy  = (u_char*)malloc(segments[i].pktHeader.caplen);
+		segments[i].pktHeader = *pkt_header;
+		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen);
+		segments[i].pkt_data = dataCopy;
+		++i;
 	}
 	
+	for (i = 0; i < tcpCount; ++i) {
+		printf("%d packet\n\t %s\n",i,segments[i].pktData);
+	}
+
+
 	if (state == -1) {
 		printf("Error reading the packets: %s\n", pcap_geterr(fp));
 	}
