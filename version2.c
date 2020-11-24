@@ -69,19 +69,23 @@ int main(int argc, char** argv) {
 	}
 	
 	while((state = pcap_next_ex(fp, &pkt_header, &pkt_data)) >= 0) {
-		ethernetHeader = (struct ether_header*)pkt_data
-		if ()
-		dataCopy  = (u_char*)malloc(pkt_header->caplen * sizeof(pkt_data));
-		segments[i].pktHeader = *pkt_header;
-		memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen * sizeof(pkt_data));
-		segments[i].pktData = dataCopy;
-		++i;
+		ethernetHeader = (struct ether_header*)pkt_data;
+		if (ntohs(ethernetHeader->ether_type) == ETHERTYPE_IP) {
+			ipHeader = (struct ip*)(pkt_data + sizeof(struct ether_header));
+			if (ipHeader->ip_p == IPPROTO_TCP) {
+				dataCopy  = (u_char*)malloc(pkt_header->caplen * sizeof(pkt_data));
+				segments[i].pktHeader = *pkt_header;
+				memcpy(dataCopy, pkt_data, segments[i].pktHeader.caplen * sizeof(pkt_data));
+				segments[i].pktData = dataCopy;
+				++i;
+			}
+		}
 	}
 
 //	for (i = 0; i < tcpCount; ++i) {
 		//printf("%d packet\n\t %s\n",i,segments[i].pktData);
-		data = (u_char*)(segments[20].pktData + sizeof(struct ether_header) + sizeof(struct ip) + sizeof(struct tcphdr));
-		printf("SAVED HEADER SIZE: %d\nSAVED DATA: %s\nSize: %d\n", segments[20].pktHeader.caplen, data,sizeof(data));
+//		data = (u_char*)(segments[20].pktData + sizeof(struct ether_header) + sizeof(struct ip) + sizeof(struct tcphdr));
+//		printf("SAVED HEADER SIZE: %d\nSAVED DATA: %s\nSize: %d\n", segments[20].pktHeader.caplen, data,sizeof(data));
 //	}
 
 
