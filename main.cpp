@@ -5,15 +5,15 @@
 #include <malloc.h>
 
 #include <pcap.h>
-/*
-#include <netinet/in.h>
+
+/*#include <netinet/in.h>
 #include <netinet/ip.h>
 #include <net/if.h>
 #include <netinet/if_ether.h>
 #include <net/ethernet.h>
 #include <netinet/tcp.h>
-#include <arpa/inet.h>*/
-
+#include <arpa/inet.h>
+*/
 #include <inttypes.h>
 
 #define PCAP_BUF_SIZE 2048
